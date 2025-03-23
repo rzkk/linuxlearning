@@ -783,7 +783,7 @@ void readBlockTest(int argc ,char * argv[]){
             bzero(buf, 3);
             ssize_t ret = read(fd , buf, 2);
             printf("%ld  %s \n" , ret , buf);
-            if(ret ==0 ){
+            if(ret ==0 ){ 
                // break;
             }
             sleep(1);
@@ -791,7 +791,31 @@ void readBlockTest(int argc ,char * argv[]){
     
 }
 
+int setNonlock(int fd){
+    int flag = fcntl(fd , F_GETFL);
+    flag = flag | O_NONBLOCK ;
+    int ret = fcntl(fd , F_SETFL, flag);
+    errorEqualCheck(ret , -1 , "fcntl");
+}
+void fcntlTest(int argc ,char * argv[]){
+   
+    int fd =open("1.pipe" , O_RDONLY);
+    setNonlock(fd);
+
+    char buf[3] = {0};
+
+    while(1){
+        bzero(buf, 3);
+        ssize_t ret = read(fd , buf, 2);
+        printf("%ld  %s \n" , ret , buf);
+        // if(ret ==0 ){ 
+        //     break;
+        // }
+        sleep(1);
+    }
+
+}
 int main(int argc ,char * argv[]){
-    readBlockTest(argc, argv);
+    fcntlTest(argc, argv);
     return 0;
 }

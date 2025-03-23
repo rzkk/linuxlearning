@@ -265,7 +265,7 @@ void readBlockTest(int argc ,char * argv[]){
     int fd =open("1.pipe" , O_WRONLY);
 
     write(fd, "howareyou" , 9);
-    sleep(40);
+    sleep(8);
     
     printf("sleep over \n");
     
